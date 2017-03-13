@@ -1,0 +1,96 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+    <style name="MyCustomTheme" parent="@android:style/Theme.Holo.Light">
+        <item name="android:actionBarStyle">@style/MyActionBarTheme</item>
+        <item name="android:windowDisablePreview">true</item>
+    </style>
+
+
+    <style name="MyActionBarTheme" parent="@android:style/Widget.Holo.Light.ActionBar">
+        <item name="android:background">@color/PRIMARY_BLUE_COLOUR</item>
+        <item name="android:height">@dimen/action_bar_height</item>
+        <item name="android:titleTextStyle">@style/MyTheme.ActionBar.TitleTextStyle</item>
+    </style>
+
+    <style name="MyTheme.ActionBar.TitleTextStyle" parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Title">
+        <item name="android:textColor">@color/WHITE</item>
+    </style>
+
+
+    <style name="app_logo">
+        <item name="android:layout_width">@dimen/app_logo_width</item>
+        <item name="android:layout_height">@dimen/app_logo_height</item>
+        <item name="android:src">@drawable/app_logo</item>
+        <item name="android:layout_centerHorizontal">true</item>
+    </style>
+
+    <!--<style name="appLogoWhite">-->
+        <!--<item name="android:layout_width">@dimen/app_logo_width</item>-->
+        <!--<item name="android:layout_height">@dimen/app_logo_height</item>-->
+        <!--<item name="android:src">@drawable/logo_white</item>-->
+        <!--<item name="android:layout_centerHorizontal">true</item>-->
+    <!--</style>-->
+
+    <style name="roundButton">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/activity_main_roundbutton_layout_height</item>
+        <item name="android:paddingLeft">@dimen/activity_main_roundbutton_padding_left</item>
+        <item name="android:textSize">@dimen/activity_main_roundbutton_textsize</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:textColor">@color/WHITE</item>
+        <item name="android:gravity">left|center</item>
+
+        <item name="android:layout_marginLeft">@dimen/margin_left_all_signup</item>
+        <item name="android:layout_marginRight">@dimen/margin_left_all_signup</item>
+        <item name="android:background">@drawable/round_button_green</item>
+    </style>
+
+    <style name="roundButtonRed">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:textColor">@color/WHITE</item>
+        <item name="android:gravity">left|center</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:layout_marginLeft">@dimen/margin_left_all_signup</item>
+        <item name="android:layout_marginRight">@dimen/margin_left_all_signup</item>
+        <item name="android:background">@drawable/round_button_red</item>
+    </style>
+
+    <style name="roundEditText">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/height_edit_text</item>
+        <item name="android:textSize">@dimen/title_textsize_home_fragment_layout</item>
+        <item name="android:typeface">monospace</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:textColor">@color/BLACK</item>
+        <item name="android:gravity">left|center</item>
+        <item name="android:paddingLeft">@dimen/padding_left_all_signup</item>
+        <item name="android:layout_marginLeft">@dimen/margin_left_all_signup</item>
+        <item name="android:layout_marginRight">@dimen/margin_left_all_signup</item>
+        <item name="android:background">@drawable/round_field_gray</item>
+        <item name="android:singleLine">true</item>
+    </style>
+
+    <!-- Base application theme. -->
+    <style name="MyMaterialTheme" parent="MyMaterialTheme.Base">
+
+    </style>
+
+    <style name="MyMaterialTheme.Base" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+</resources>

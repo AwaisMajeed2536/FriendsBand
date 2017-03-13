@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="mehwish.ghazi.ui.SignupActivity">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/toolbar" />
+
+        <RelativeLayout xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/main_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/WHITE">
+
+            <ImageView
+                android:id="@+id/profile_pictuer_signup"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:src="@drawable/profile_picture_signup" />
+
+            <EditText
+                android:id="@+id/first_name"
+                style="@style/roundEditText"
+                android:layout_below="@+id/profile_pictuer_signup"
+                android:layout_marginTop="@dimen/margin_all_signup"
+                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
+                android:hint="@string/firstName"
+                android:inputType="textCapWords|textNoSuggestions|textVisiblePassword"
+                android:selectAllOnFocus="false"
+                android:textSize="@dimen/activity_main_roundbutton_textsize" />
+
+            <EditText
+                android:id="@+id/last_name"
+                style="@style/roundEditText"
+                android:layout_below="@+id/first_name"
+                android:layout_marginTop="@dimen/margin_all_signup"
+                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
+                android:hint="@string/lastName"
+                android:inputType="textCapWords|textNoSuggestions|textVisiblePassword"
+                android:textSize="@dimen/activity_main_roundbutton_textsize" />
+
+            <EditText
+                android:id="@+id/email"
+                style="@style/roundEditText"
+                android:layout_below="@+id/last_name"
+                android:layout_marginTop="@dimen/margin_all_signup"
+                android:hint="@string/email"
+                android:inputType="textEmailAddress"
+                android:textSize="@dimen/activity_main_roundbutton_textsize" />
+
+            <EditText
+                android:id="@+id/password"
+                style="@style/roundEditText"
+                android:layout_below="@+id/email"
+                android:layout_marginTop="@dimen/margin_all_signup"
+                android:hint="@string/password"
+                android:inputType="textPassword"
+                android:maxLines="1"
+                android:paddingRight="50dp"
+                android:textSize="@dimen/activity_main_roundbutton_textsize" />
+
+            <ImageView
+                android:id="@+id/show_password"
+                android:layout_width="35dp"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/password"
+                android:layout_alignRight="@+id/password"
+                android:layout_alignTop="@+id/password"
+                android:src="@drawable/show_pass" />
+
+            <EditText
+                android:id="@+id/confirm_password"
+                style="@style/roundEditText"
+                android:layout_below="@+id/password"
+                android:layout_marginTop="@dimen/margin_all_signup"
+                android:hint="@string/confirmPassword"
+                android:inputType="textPassword"
+                android:textSize="@dimen/activity_main_roundbutton_textsize" />
+
+            <ImageView
+                android:id="@+id/show_confirm_password"
+                android:layout_width="35dp"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/confirm_password"
+                android:layout_alignRight="@+id/confirm_password"
+                android:layout_alignTop="@+id/confirm_password"
+                android:src="@drawable/show_pass" />
+
+            <TextView
+                android:id="@+id/gender_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/confirm_password"
+                android:layout_marginLeft="34dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/gender"
+                android:textAppearance="@android:style/TextAppearance.Large" />
+
+            <RadioGroup
+                android:id="@+id/gender_rg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/gender_tv"
+                android:layout_marginTop="10dp"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/male"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Male" />
+
+                <RadioButton
+                    android:id="@+id/female"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Female" />
+
+                <RadioButton
+                    android:id="@+id/other"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Other" />
+
+            </RadioGroup>
+
+            <EditText
+                android:id="@+id/city_name"
+                style="@style/roundEditText"
+                android:layout_below="@+id/gender_rg"
+                android:layout_marginTop="@dimen/margin_all_signup"
+                android:hint="@string/cityName"
+                android:inputType="textPassword"
+                android:textSize="@dimen/activity_main_roundbutton_textsize" />
+
+            <EditText
+                android:id="@+id/mobile_number"
+                style="@style/roundEditText"
+                android:layout_below="@+id/city_name"
+                android:layout_marginTop="@dimen/margin_all_signup"
+                android:hint="@string/mobileNo"
+                android:inputType="textPassword"
+                android:textSize="@dimen/activity_main_roundbutton_textsize" />
+
+            <EditText
+                android:id="@+id/profession"
+                style="@style/roundEditText"
+                android:layout_below="@+id/mobile_number"
+                android:layout_marginTop="@dimen/margin_all_signup"
+                android:hint="@string/Profession"
+                android:inputType="textPassword"
+                android:textSize="@dimen/activity_main_roundbutton_textsize" />
+
+
+            <Button
+                android:id="@+id/signup_button"
+                style="@style/roundButton"
+                android:layout_below="@+id/profession"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="@dimen/margin_all_signup"
+                android:gravity="center|center_vertical"
+                android:text="Sign Up" />
+
+
+        </RelativeLayout>
+
+    </LinearLayout>
+</ScrollView>

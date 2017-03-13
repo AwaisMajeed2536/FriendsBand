@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="mehwish.ghazi.ui.LoginActivity"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar" />
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/WHITE">
+
+    <ImageView
+        android:layout_marginTop="30dp"
+        style="@style/app_logo"/>
+
+    <EditText
+        android:id="@+id/user_email_edittext"
+        style="@style/roundEditText"
+        android:hint="Email"
+        android:textSize="@dimen/activity_main_roundbutton_textsize"
+        android:inputType="textEmailAddress"
+        android:layout_above="@+id/user_password_edittext"
+        android:layout_marginBottom="@dimen/title_margintop_home_fragment_layout"/>
+
+    <EditText
+        android:id="@+id/user_password_edittext"
+        style="@style/roundEditText"
+        android:textSize="@dimen/activity_main_roundbutton_textsize"
+        android:hint="Password"
+        android:inputType="textPassword"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="@dimen/title_margintop_home_fragment_layout"/>
+
+    <Button
+        android:id="@+id/login_button"
+        style="@style/roundButton"
+        android:text="Log In"
+        android:gravity="center|center_vertical"
+        android:layout_below="@+id/user_password_edittext"
+        android:layout_marginTop="@dimen/title_margintop_home_fragment_layout"/>
+
+    <Button
+        android:id="@+id/forget_password"
+        style="@style/roundButton"
+        android:text="Forgot your password?"
+        android:gravity="center|center_vertical"
+        android:layout_below="@+id/login_button"
+        android:layout_marginTop="@dimen/title_margintop_home_fragment_layout"
+        android:background="@drawable/round_button_gray"
+        android:textColor="@color/PRIMARY_BLUE_COLOUR"/>
+
+</RelativeLayout>
+</LinearLayout>

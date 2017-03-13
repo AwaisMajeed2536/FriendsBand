@@ -1,0 +1,39 @@
+<resources>
+    <string name="app_name">Friends Band</string>
+    <string name="firstName">First Name<font fgcolor="red">*</font></string>
+    <string name="lastName">Last Name<font fgcolor="red">*</font></string>
+    <string name="email">Email<font fgcolor="red">*</font></string>
+    <string name="password">Password<font fgcolor="red">*</font></string>
+    <string name="confirmPassword">Confirm Password<font fgcolor="red">*</font></string>
+    <string name="cityName">City Name<font fgcolor="red">*</font></string>
+    <string name="mobileNo">Mobile Number<font fgcolor="red">*</font></string>
+    <string name="Profession">Profession<font fgcolor="red">*</font></string>
+    <string name="gender">Gender <font fgcolor="red">*  </font>:</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_search">Search</string>
+    <string name="drawer_open">Open</string>
+    <string name="drawer_close">Close</string>
+
+    <string name="nav_item_my_current_location">My Current Location</string>
+    <string name="nav_item_view_friend_list">View Friend List</string>
+    <string name="nav_item_view_friend_requests">View Friend Requests</string>
+    <string name="nav_item_view_locatoin_of_friend">View Friend\'s Location</string>
+    <string name="nav_item_analyse_friend">Analyse Friend</string>
+    <string name="nav_item_logout">Logout</string>
+
+    <!-- navigation drawer item labels  -->
+    <string-array name="nav_drawer_labels">
+        <item>@string/nav_item_my_current_location</item>
+        <item>@string/nav_item_view_friend_list</item>
+        <item>@string/nav_item_view_friend_requests</item>
+        <item>@string/nav_item_view_locatoin_of_friend</item>
+        <item>@string/nav_item_analyse_friend</item>
+        <item>@string/nav_item_logout</item>
+    </string-array>
+
+    <string name="title_my_current_location">My Current Location</string>
+    <string name="title_friend_list">Friend List</string>
+    <string name="title_friend_requests">Friend Requests</string>
+    <string name="title_friends_location">Friend\'s Location</string>
+    <string name="title_analyse_friend">Analyse Friend</string>
+</resources>
