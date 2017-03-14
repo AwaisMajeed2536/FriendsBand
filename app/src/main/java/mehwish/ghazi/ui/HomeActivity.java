@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import mehwish.ghazi.R;
+import mehwish.ghazi.fragment.CFragment;
 import mehwish.ghazi.fragment.FragmentDrawer;
 import mehwish.ghazi.fragment.FriendsListFragment;
 import mehwish.ghazi.fragment.HomeFragment;
