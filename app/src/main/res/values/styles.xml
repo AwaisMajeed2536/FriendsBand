@@ -93,4 +93,13 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="swipe_left_instruction_dialog">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@mipmap/swipe_left_icon</item>
+    </style>
+    <style name="swipe_right_instruction_dialog">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@mipmap/swipe_right_icon</item>
+    </style>
+
 </resources>

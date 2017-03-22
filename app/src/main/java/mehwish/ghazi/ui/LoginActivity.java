@@ -30,8 +30,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View view) {
         if (view.getId() == R.id.login_button) {
             startActivity(new Intent(LoginActivity.this,HomeActivity.class));
+            overridePendingTransition(R.anim.trans_left_in,R.anim.trans_left_out);
+            finish();
         } else if (view.getId() == R.id.forget_password) {
-
+            getSupportFragmentManager().beginTransaction().add(R.id.container_body,new ForgotPasswordFragment()).
+                    addToBackStack("FORGOT_PASSWORD").commit();
         }
     }
 

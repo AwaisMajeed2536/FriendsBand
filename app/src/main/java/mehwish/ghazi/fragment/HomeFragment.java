@@ -10,6 +10,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,7 +34,7 @@ import mehwish.ghazi.R;
 import static android.content.Context.LOCATION_SERVICE;
 
 
-public class HomeFragment extends BaseFragment {
+public class HomeFragment extends Fragment {
 
     private LocationManager locationManager;
     private LocationListener locationListener;
@@ -81,33 +82,28 @@ public class HomeFragment extends BaseFragment {
                 googleMap = map;
                 googleMap.setMyLocationEnabled(true);
 
-                //if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                if ((locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) && currentLocation!= null)) {
 
-                Double latitude = currentLocation.getLatitude();
-                Double longitude = currentLocation.getLongitude();
-                cityName = null;
-                Geocoder gcd = new Geocoder(getActivity(), Locale.getDefault());
-                List<Address> addresses;
-                try {
-                    addresses = gcd.getFromLocation(currentLocation.getLatitude(),
-                            currentLocation.getLongitude(), 1);
-                    if (addresses.size() > 0) {
-                        cityName = addresses.get(0).getLocality();
+                    Double latitude = currentLocation.getLatitude();
+                    Double longitude = currentLocation.getLongitude();
+                    cityName = null;
+                    Geocoder gcd = new Geocoder(getActivity(), Locale.getDefault());
+                    List<Address> addresses;
+                    try {
+                        addresses = gcd.getFromLocation(currentLocation.getLatitude(),
+                                currentLocation.getLongitude(), 1);
+                        if (addresses.size() > 0) {
+                            cityName = addresses.get(0).getLocality();
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
-                } catch (IOException e) {
-                    e.printStackTrace();
+                    myPosition = new LatLng(latitude, longitude);
+                    googleMap.addMarker(new MarkerOptions().position(myPosition).title("My Current Location"));
+                    //googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myPosition, 11));
+                } else {
+                    Toast.makeText(getActivity(), "Please enable GPS!", Toast.LENGTH_SHORT).show();
                 }
-                MarkerOptions markerOptions = new MarkerOptions();
-                markerOptions.position(new LatLng(latitude,longitude));
-                markerOptions.title("Current Position");
-                markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
-
-                currentLocationMarker = googleMap.addMarker(markerOptions);
-                myPosition = new LatLng(latitude, longitude);
-                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myPosition,11));
-//                }else{
-//
-//                }
 
             }
         });
@@ -219,11 +215,6 @@ public class HomeFragment extends BaseFragment {
         }
 
 
-    }
-
-    @Override
-    public String setFragmentTitle() {
-        return "Current Location";
     }
 
 }

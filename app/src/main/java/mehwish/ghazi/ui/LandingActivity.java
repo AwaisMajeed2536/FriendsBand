@@ -29,8 +29,10 @@ public class LandingActivity extends AppCompatActivity implements View.OnClickLi
     public void onClick(View view) {
         if (view.getId() == R.id.signup_with_email) {
             startActivity(new Intent(LandingActivity.this,SignupActivity.class));
+            overridePendingTransition(R.anim.trans_left_in,R.anim.trans_left_out);
         } else if (view.getId() == R.id.signup_already) {
             startActivity(new Intent(LandingActivity.this,LoginActivity.class));
+            overridePendingTransition(R.anim.trans_left_in,R.anim.trans_left_out);
         }
     }
 

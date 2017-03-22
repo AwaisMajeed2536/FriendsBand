@@ -16,8 +16,10 @@ import mehwish.ghazi.R;
 import mehwish.ghazi.fragment.CFragment;
 import mehwish.ghazi.fragment.FragmentDrawer;
 import mehwish.ghazi.fragment.FriendsListFragment;
+import mehwish.ghazi.fragment.FriendsRequestFragment;
 import mehwish.ghazi.fragment.HomeFragment;
 import mehwish.ghazi.fragment.MessagesFragment;
+import mehwish.ghazi.fragment.TrackFriendListFragment;
 
 public class HomeActivity extends AppCompatActivity implements FragmentDrawer.FragmentDrawerListener {
 
@@ -34,6 +36,7 @@ public class HomeActivity extends AppCompatActivity implements FragmentDrawer.Fr
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+
 
         drawerFragment = (FragmentDrawer)
                 getSupportFragmentManager().findFragmentById(R.id.fragment_navigation_drawer);
@@ -80,6 +83,10 @@ public class HomeActivity extends AppCompatActivity implements FragmentDrawer.Fr
     private void displayView(int position) {
         Fragment fragment = null;
         String title = getString(R.string.app_name);
+
+        if (getSupportFragmentManager().getBackStackEntryCount() > 1){
+            getSupportActionBar().setDisplayShowHomeEnabled(false);
+        }
         switch (position) {
             case 0:
                 fragment = new HomeFragment();
@@ -87,12 +94,21 @@ public class HomeActivity extends AppCompatActivity implements FragmentDrawer.Fr
                 break;
             case 1:
                 fragment = new FriendsListFragment();
-                title = getString(R.string.title_friend_requests);
+                title = getString(R.string.title_friend_list);
                 break;
             case 2:
-                fragment = new MessagesFragment();
+                fragment = new FriendsRequestFragment();
+                title = "Friend Requests";
+                break;
+            case 3:
+                fragment = new TrackFriendListFragment();
                 title = getString(R.string.title_friends_location);
                 break;
+            case 4:
+                Toast.makeText(HomeActivity.this, "TODO Analyse!", Toast.LENGTH_SHORT).show();
+                break;
+            case 5:
+                finish();
             default:
                 break;
         }
@@ -106,5 +122,11 @@ public class HomeActivity extends AppCompatActivity implements FragmentDrawer.Fr
             // set the toolbar title
             getSupportActionBar().setTitle(title);
         }
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 }

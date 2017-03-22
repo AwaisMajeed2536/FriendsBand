@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp"
+    android:background="@color/colorPrimaryDark"
+    android:padding="5dp">
+
+    <ImageView
+        android:id="@+id/track_friend_image_request"
+        android:layout_width="100dp"
+        android:layout_centerVertical="true"
+        android:layout_height="100dp"
+        android:src="@mipmap/ic_launcher" />
+
+    <LinearLayout
+        android:id="@+id/details_ll"
+        android:layout_width="190dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:layout_toRightOf="@+id/track_friend_image_request"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/friend_name_track"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Friend's Name"
+            android:layout_marginTop="35dp"
+            android:layout_marginLeft="5dp"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="#ffffff" />
+
+        <LinearLayout
+            android:layout_marginLeft="5dp"
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="3dp"
+                android:text="Contact# "
+                android:textColor="#ffffff" />
+
+            <TextView
+                android:id="@+id/friend_contact_no_track"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="6dp"
+                android:text="+923047202145"
+                android:textColor="#ffffff" />
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

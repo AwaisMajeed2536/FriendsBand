@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 
 import mehwish.ghazi.R;
@@ -25,6 +24,7 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void run() {
                 startActivity(new Intent(context,LandingActivity.class));
+                overridePendingTransition(R.anim.trans_left_in,R.anim.trans_left_out);
                 finish();
             }
         },1500);

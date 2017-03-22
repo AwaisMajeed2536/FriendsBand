@@ -37,4 +37,5 @@
     <string name="title_friend_requests">Friend Requests</string>
     <string name="title_friends_location">Friend\'s Location</string>
     <string name="title_analyse_friend">Analyse Friend</string>
+    <string name="title_activity_check_map">Map</string>
 </resources>
