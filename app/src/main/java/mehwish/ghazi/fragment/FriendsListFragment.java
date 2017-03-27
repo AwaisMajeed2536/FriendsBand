@@ -84,6 +84,8 @@ public class FriendsListFragment extends Fragment implements View.OnClickListene
         }, 3000);
     }
 
+
+
     public void setData() {
         animRightSwipe = AnimationUtils.loadAnimation(getActivity(), R.anim.trans_right_out);
         animRightSwipe.setDuration(500);
@@ -159,23 +161,27 @@ public class FriendsListFragment extends Fragment implements View.OnClickListene
         }
 
         public void onSwipeRight(int pos) {
-            View view = friendsListLV.getChildAt(pos);
-            if (view != null)
+            int i = friendsListLV.getFirstVisiblePosition();
+            View view = friendsListLV.getChildAt(pos-i);
+            if (view != null) {
                 view.startAnimation(animRightSwipe);
-            Toast.makeText(context, "Message Friend (TODO)!", Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "Message Friend (TODO)!", Toast.LENGTH_LONG).show();
+            }
         }
 
         public void onSwipeLeft(int pos) {
-            View view = friendsListLV.getChildAt(pos);
-            if (view != null)
+            int i = friendsListLV.getFirstVisiblePosition();
+            View view = friendsListLV.getChildAt(pos-i);
+            if (view != null) {
                 view.startAnimation(animLeftSwipe);
-            toDelete = pos;
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    showDeleteFriendDialog();
-                }
-            }, 300);
+                toDelete = pos;
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        showDeleteFriendDialog();
+                    }
+                }, 300);
+            }
         }
 
         private final class GestureListener extends GestureDetector.SimpleOnGestureListener {

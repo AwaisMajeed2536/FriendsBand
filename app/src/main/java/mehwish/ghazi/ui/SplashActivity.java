@@ -2,8 +2,10 @@ package mehwish.ghazi.ui;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
@@ -23,9 +25,14 @@ public class SplashActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                startActivity(new Intent(context,LandingActivity.class));
-                overridePendingTransition(R.anim.trans_left_in,R.anim.trans_left_out);
-                finish();
+                SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+                if (sp.getBoolean("isUserAlreadyLoggedIn",false)){
+                    startActivity(new Intent(context, HomeActivity.class));
+                    overridePendingTransition(R.anim.trans_left_in, R.anim.trans_left_out);
+                }else {
+                    startActivity(new Intent(context, LandingActivity.class));
+                    overridePendingTransition(R.anim.trans_left_in, R.anim.trans_left_out);
+                }
             }
         },1500);
     }

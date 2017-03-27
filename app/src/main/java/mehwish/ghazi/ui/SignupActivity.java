@@ -1,12 +1,14 @@
 package mehwish.ghazi.ui;
 
+import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -15,13 +17,25 @@ import android.util.Patterns;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.NumberPicker;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.FileNotFoundException;
+import java.util.Calendar;
 
 import mehwish.ghazi.R;
+import mehwish.ghazi.model.UserAccountBO;
 
 /**
  * Created by Devprovider on 3/11/2017.
@@ -30,8 +44,8 @@ import mehwish.ghazi.R;
 public class SignupActivity extends AppCompatActivity implements View.OnClickListener, View.OnFocusChangeListener, View.OnTouchListener {
     public static final int IMAGE_KEY = 1;
     private Bitmap chosenProfileImage;
-    protected ImageView profilePictuerSignup;
     protected EditText firstName;
+    protected ImageView profilePictuerSignup;
     protected EditText lastName;
     protected EditText email;
     protected EditText password;
@@ -44,6 +58,8 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     protected EditText profession;
     protected Button signupButton;
     protected Toolbar mToolbar;
+    protected NumberPicker dayPicker,monthPicker,yearPicker;
+    protected String [] monthName = {"Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sep", "Oct", "Nov", "Dec"};
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -54,6 +70,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setTitle("Sign Up");
         initView();
+        setDateView();
     }
 
     @Override
@@ -63,8 +80,97 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
             intent.setType("image/*");
             startActivityForResult(intent,IMAGE_KEY);
         } else if (view.getId() == R.id.signup_button) {
-
+            if(checkInputs()){
+                UserAccountBO model = new UserAccountBO(firstName.getText().toString(),
+                        lastName.getText().toString(), email.getText().toString(), password.getText().toString(),
+                        getGender(genderRg), getDob(), cityName.getText().toString(),
+                        mobileNumber.getText().toString(), profession.getText().toString());
+                DatabaseReference mRef = FirebaseDatabase.getInstance()
+                        .getReferenceFromUrl("https://friendsband-a3dc9.firebaseio.com/root/userData");
+                String childPath = email.getText().toString().replace(String.valueOf('.')  ,  "_");
+                final ProgressDialog pd = new ProgressDialog(this);
+                pd.setCancelable(false);
+                pd.setTitle("Please Wait!");
+                pd.show();
+                mRef.child(childPath).setValue(model).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        pd.dismiss();
+                        finish();
+                        startActivity(new Intent(SignupActivity.this,HomeActivity.class));
+                        finish();
+                    }
+                });
+            }
         }
+    }
+
+    private void setDateView(){
+        dayPicker = (NumberPicker) findViewById(R.id.user_dob_day);
+        monthPicker = (NumberPicker) findViewById(R.id.user_dob_month);
+        yearPicker = (NumberPicker) findViewById(R.id.user_dob_year);
+        dayPicker.setMinValue(1);
+        dayPicker.setMaxValue(31);
+        monthPicker.setMinValue(0);
+        monthPicker.setMaxValue(11);
+        monthPicker.setDisplayedValues(monthName);
+        yearPicker.setMinValue(1900);
+        yearPicker.setMaxValue(Calendar.getInstance().get(Calendar.YEAR));
+        yearPicker.setValue(1980);
+    }
+
+    private String getDob(){
+        return new StringBuilder().append(dayPicker.getValue()).append("/").append(monthPicker.getValue()+1)
+                .append("/").append(yearPicker.getValue()).toString();
+    }
+
+    private UserAccountBO.Gender getGender(RadioGroup rg){
+        int rbId = rg.getCheckedRadioButtonId();
+        RadioButton rb = (RadioButton)rg.findViewById(rbId);
+        String gender = rb.getText().toString();
+        if (gender.equalsIgnoreCase("male"))
+            return UserAccountBO.Gender.MALE;
+        else if (gender.equalsIgnoreCase("male"))
+            return UserAccountBO.Gender.FEMALE;
+        else
+            return UserAccountBO.Gender.OTHER;
+    }
+
+    private boolean checkInputs(){
+        if(firstName.getText().toString().isEmpty()){
+            firstName.setError("First Name is required!");
+            firstName.requestFocus();
+            return false;
+        } else if (lastName.getText().toString().isEmpty()){
+            lastName.setError("Last Name is required!");
+            lastName.requestFocus();
+            return false;
+        } else if (!Patterns.EMAIL_ADDRESS.matcher(email.getText().toString()).matches()){
+            email.setError("Enter a valid email address");
+            email.requestFocus();
+            return false;
+        } else if (password.getText().toString().length() <6){
+            password.setError("Password should be six characters long");
+            password.requestFocus();
+            return false;
+        } else if (!confirmPassword.getText().toString().equals(password.getText().toString())){
+            confirmPassword.setError("Passwords do not match");
+            confirmPassword.requestFocus();
+            return false;
+        } else if (cityName.getText().toString().isEmpty()){
+            cityName.setError("City Name is required!");
+            cityName.requestFocus();
+            return false;
+        } else if (mobileNumber.getText().toString().length() < 14){
+            mobileNumber.setError("Mobile number is required!");
+            mobileNumber.requestFocus();
+            return false;
+        } else if (profession.getText().toString().isEmpty()){
+            profession.setError("Profession is required!");
+            profession.requestFocus();
+            return false;
+        }
+        return true;
     }
 
     private void initView() {
@@ -177,13 +283,14 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         if (requestCode == IMAGE_KEY && resultCode == RESULT_OK  && data != null){
             Uri imageUri = data.getData();
             try{
-                Bitmap imageBitmap = decodeUri(imageUri);
-                profilePictuerSignup.setImageBitmap(imageBitmap);
+                chosenProfileImage = decodeUri(imageUri);
+                profilePictuerSignup.setImageBitmap(chosenProfileImage);
             }catch (FileNotFoundException e){
                 e.printStackTrace();
             }
         }
     }
+
     private Bitmap decodeUri(Uri selectedImage) throws FileNotFoundException{
         //Decode image size
         BitmapFactory.Options factoryOptions = new BitmapFactory.Options();

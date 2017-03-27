@@ -6,9 +6,9 @@
     tools:context="mehwish.ghazi.ui.SignupActivity">
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
         <include
             android:id="@+id/toolbar"
@@ -135,13 +135,49 @@
 
             </RadioGroup>
 
+
+            <TextView
+                android:id="@+id/dob_lable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/gender_rg"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="10dp"
+                android:text="Date of Birth"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+            <LinearLayout
+                android:id="@+id/user_dob"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:layout_below="@+id/dob_lable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true">
+
+                <NumberPicker
+                    android:id="@+id/user_dob_day"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+                <NumberPicker
+                    android:id="@+id/user_dob_month"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+                <NumberPicker
+                    android:id="@+id/user_dob_year"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+
             <EditText
                 android:id="@+id/city_name"
                 style="@style/roundEditText"
-                android:layout_below="@+id/gender_rg"
+                android:layout_below="@+id/user_dob"
                 android:layout_marginTop="@dimen/margin_all_signup"
                 android:hint="@string/cityName"
-                android:inputType="textPassword"
+                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                android:inputType="textAutoComplete"
                 android:textSize="@dimen/activity_main_roundbutton_textsize" />
 
             <EditText
@@ -150,7 +186,7 @@
                 android:layout_below="@+id/city_name"
                 android:layout_marginTop="@dimen/margin_all_signup"
                 android:hint="@string/mobileNo"
-                android:inputType="textPassword"
+                android:inputType="number"
                 android:textSize="@dimen/activity_main_roundbutton_textsize" />
 
             <EditText
@@ -159,7 +195,8 @@
                 android:layout_below="@+id/mobile_number"
                 android:layout_marginTop="@dimen/margin_all_signup"
                 android:hint="@string/Profession"
-                android:inputType="textPassword"
+                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                android:inputType="textAutoComplete"
                 android:textSize="@dimen/activity_main_roundbutton_textsize" />
 
 

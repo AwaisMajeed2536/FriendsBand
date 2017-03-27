@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "730255782360",
+    "firebase_url": "https://friendsband-a3dc9.firebaseio.com",
+    "project_id": "friendsband-a3dc9",
+    "storage_bucket": "friendsband-a3dc9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:730255782360:android:cef83388c0e7cd87",
+        "android_client_info": {
+          "package_name": "mehwish.ghazi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "730255782360-j4k7rtnfr5mr66vjvmu47i3qishttk9k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyALbWvX3At0JayzOb8SF-ewIkg9hAsDQVw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

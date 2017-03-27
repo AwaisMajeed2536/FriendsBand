@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import mehwish.ghazi.R;
+import mehwish.ghazi.ui.HomeActivity;
 
 /**
  * Created by Devprovider on 3/19/2017.
@@ -37,5 +38,6 @@ public class FriendsDetailsFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         String s = getArguments().getString(DETAILS_KEY);
+        ((HomeActivity)getActivity()).setActionBarTitle(s);
     }
 }

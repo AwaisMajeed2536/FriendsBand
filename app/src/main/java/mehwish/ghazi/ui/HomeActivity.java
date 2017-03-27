@@ -1,6 +1,8 @@
 package mehwish.ghazi.ui;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -13,13 +15,12 @@ import android.view.View;
 import android.widget.Toast;
 
 import mehwish.ghazi.R;
-import mehwish.ghazi.fragment.CFragment;
 import mehwish.ghazi.fragment.FragmentDrawer;
 import mehwish.ghazi.fragment.FriendsListFragment;
 import mehwish.ghazi.fragment.FriendsRequestFragment;
 import mehwish.ghazi.fragment.HomeFragment;
-import mehwish.ghazi.fragment.MessagesFragment;
 import mehwish.ghazi.fragment.TrackFriendListFragment;
+import mehwish.ghazi.model.UserAccountBO;
 
 public class HomeActivity extends AppCompatActivity implements FragmentDrawer.FragmentDrawerListener {
 
@@ -98,7 +99,7 @@ public class HomeActivity extends AppCompatActivity implements FragmentDrawer.Fr
                 break;
             case 2:
                 fragment = new FriendsRequestFragment();
-                title = "Friend Requests";
+                title = getString(R.string.title_friend_requests);
                 break;
             case 3:
                 fragment = new TrackFriendListFragment();
@@ -106,9 +107,13 @@ public class HomeActivity extends AppCompatActivity implements FragmentDrawer.Fr
                 break;
             case 4:
                 Toast.makeText(HomeActivity.this, "TODO Analyse!", Toast.LENGTH_SHORT).show();
+                title = getString(R.string.title_analyse_friend);
                 break;
             case 5:
+                SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(HomeActivity.this);
+                sp.edit().putBoolean("isUserAlreadyLoggedIn",false).apply();
                 finish();
+                break;
             default:
                 break;
         }
@@ -118,11 +123,11 @@ public class HomeActivity extends AppCompatActivity implements FragmentDrawer.Fr
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.container_body, fragment);
             fragmentTransaction.commit();
-
-            // set the toolbar title
-            getSupportActionBar().setTitle(title);
+            setActionBarTitle(title);
         }
-
+    }
+    public void setActionBarTitle(String title){
+        getSupportActionBar().setTitle(title);
     }
 
     @Override

@@ -20,7 +20,6 @@
     <string name="nav_item_view_locatoin_of_friend">View Friend\'s Location</string>
     <string name="nav_item_analyse_friend">Analyse Friend</string>
     <string name="nav_item_logout">Logout</string>
-    <string name="google_map_key">AlzaSyDv_Pr1JORjTMrXd0skcxlKtvm7RNPDAKU</string>
 
     <!-- navigation drawer item labels  -->
     <string-array name="nav_drawer_labels">

@@ -37,7 +37,6 @@ import static android.content.Context.LOCATION_SERVICE;
 public class HomeFragment extends Fragment {
 
     private LocationManager locationManager;
-    private LocationListener locationListener;
     private GoogleMap googleMap;
     private LatLng myPosition;
     private String cityName;
@@ -45,12 +44,6 @@ public class HomeFragment extends Fragment {
 
     public HomeFragment() {
         // Required empty public constructor
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -82,67 +75,35 @@ public class HomeFragment extends Fragment {
                 googleMap = map;
                 googleMap.setMyLocationEnabled(true);
 
-                if ((locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) && currentLocation!= null)) {
-
-                    Double latitude = currentLocation.getLatitude();
-                    Double longitude = currentLocation.getLongitude();
-                    cityName = null;
-                    Geocoder gcd = new Geocoder(getActivity(), Locale.getDefault());
-                    List<Address> addresses;
-                    try {
-                        addresses = gcd.getFromLocation(currentLocation.getLatitude(),
-                                currentLocation.getLongitude(), 1);
-                        if (addresses.size() > 0) {
-                            cityName = addresses.get(0).getLocality();
+                if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                    if (currentLocation == null)
+                        currentLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                    if(currentLocation!=null) {
+                        Double latitude = currentLocation.getLatitude();
+                        Double longitude = currentLocation.getLongitude();
+                        cityName = null;
+                        Geocoder gcd = new Geocoder(getActivity(), Locale.getDefault());
+                        List<Address> addresses;
+                        try {
+                            addresses = gcd.getFromLocation(currentLocation.getLatitude(),
+                                    currentLocation.getLongitude(), 1);
+                            if (addresses.size() > 0) {
+                                cityName = addresses.get(0).getLocality();
+                                Toast.makeText(getActivity(), cityName, Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
                         }
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                        myPosition = new LatLng(latitude, longitude);
+                        googleMap.addMarker(new MarkerOptions().position(myPosition).title("My Current Location"));
+                        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myPosition, 11));
+                    } else{
+                        Toast.makeText(getActivity(), "Couldn't get location!", Toast.LENGTH_SHORT).show();
                     }
-                    myPosition = new LatLng(latitude, longitude);
-                    googleMap.addMarker(new MarkerOptions().position(myPosition).title("My Current Location"));
-                    //googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myPosition, 11));
-                } else {
+                } else
                     Toast.makeText(getActivity(), "Please enable GPS!", Toast.LENGTH_SHORT).show();
-                }
-
             }
         });
-/*
-        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED) {
-
-            //if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            locationListener = new MyLocationListener();
-            // } else {
-            Location currentLocation = getLastKnownLocation();
-
-            String longitude = "Longitude: " + currentLocation.getLongitude();
-            String latitude = "Latitude: " + currentLocation.getLatitude();
-            String cityName = null;
-            Geocoder gcd = new Geocoder(getActivity(), Locale.getDefault());
-            List<Address> addresses;
-            try {
-                addresses = gcd.getFromLocation(currentLocation.getLatitude(),
-                        currentLocation.getLongitude(), 1);
-                if (addresses.size() > 0) {
-                    cityName = addresses.get(0).getLocality();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            String s = longitude + "\n" + latitude + "\n\nMy Current City is: "
-                    + cityName;
-            //editLocation.setText(s);
-            //  }
-
-        } else {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.CAMERA)) {
-                Toast.makeText(getActivity(), "Can't ask for permission", Toast.LENGTH_LONG).show();
-            } else {
-                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA}, 9);
-            }
-        }*/
-
     }
 
     private Location getLastKnownLocation() {
@@ -171,50 +132,6 @@ public class HomeFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-    }
-
-    private class MyLocationListener implements LocationListener {
-
-        @Override
-        public void onLocationChanged(Location loc) {
-            //editLocation.setText("");
-            Toast.makeText(getActivity(), "Location changed: Lat: " + loc.getLatitude() + " Lng: "
-                    + loc.getLongitude(), Toast.LENGTH_SHORT).show();
-            String longitude = "Longitude: " + loc.getLongitude();
-            String latitude = "Latitude: " + loc.getLatitude();
-
-            //------- To get city name from coordinates --------
-
-            String cityName = null;
-            Geocoder gcd = new Geocoder(getActivity(), Locale.getDefault());
-            List<Address> addresses;
-            try {
-                addresses = gcd.getFromLocation(loc.getLatitude(),
-                        loc.getLongitude(), 1);
-                if (addresses.size() > 0) {
-                    cityName = addresses.get(0).getLocality();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            String s = longitude + "\n" + latitude + "\n\nMy Current City is: "
-                    + cityName;
-            //editLocation.setText(s);
-        }
-
-        @Override
-        public void onProviderDisabled(String provider) {
-        }
-
-        @Override
-        public void onProviderEnabled(String provider) {
-        }
-
-        @Override
-        public void onStatusChanged(String provider, int status, Bundle extras) {
-        }
-
-
     }
 
 }
