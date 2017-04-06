@@ -134,4 +134,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onCancelled(DatabaseError databaseError) {
 
     }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+        overridePendingTransition(0, R.anim.exit_activity);
+        super.onBackPressed();
+    } // onBackPressed
 }

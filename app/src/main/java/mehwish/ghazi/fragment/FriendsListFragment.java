@@ -1,7 +1,10 @@
 package mehwish.ghazi.fragment;
 
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -14,18 +17,27 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import android.os.Handler;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import mehwish.ghazi.R;
 import mehwish.ghazi.adapter.FriendsListAdapter;
 import mehwish.ghazi.model.FriendsListAndRequestModel;
+import mehwish.ghazi.model.UserAccountModel;
 
 /**
  * Created by Devprovider on 3/7/2017.
@@ -35,12 +47,17 @@ public class FriendsListFragment extends Fragment implements View.OnClickListene
 
     private static final String FRAGMENT_TAG = "friendslistfragment";
     private List<FriendsListAndRequestModel> dataList = new ArrayList<>();
+    private List<UserAccountModel> mainDataList = new ArrayList<>();
     private ListView friendsListLV;
     private Context context;
     private AlertDialog unfriendDialog;
     private static int toDelete;
     private Animation animRightSwipe;
     private Animation animLeftSwipe;
+    private DatabaseReference friendsListRef;
+    private DatabaseReference dataListRef;
+    private List<String> friendsList;
+    private ProgressDialog progressDialog;
 
     public FriendsListFragment() {
         // Required empty public constructor
@@ -58,9 +75,73 @@ public class FriendsListFragment extends Fragment implements View.OnClickListene
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         context = getActivity();
+        progressDialog = new ProgressDialog(context);
+        progressDialog.setTitle("Fetching Friend's List");
+        progressDialog.setMessage("Please wait...");
+        progressDialog.setIcon(R.mipmap.fetching_icon);
+        progressDialog.show();
         friendsListLV = (ListView) view.findViewById(R.id.friends_list_LV);
-        getTempData();
+        friendsListRef = FirebaseDatabase.getInstance().getReferenceFromUrl
+                ("https://friendsband-a3dc9.firebaseio.com/root/friendsRecord/awais_m2536@gmail_con");
+
+        dataListRef = FirebaseDatabase.getInstance().getReferenceFromUrl
+                ("https://friendsband-a3dc9.firebaseio.com/root/userData/");
+        getFriendNames();
+//        getTempData();
+//        setData();
+    }
+
+    private void getFriendNames() {
+
+        friendsListRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                friendsList = new ArrayList<String>();
+                HashMap<String, String> hm = (HashMap<String, String>) dataSnapshot.getValue();
+                friendsList = new ArrayList<String>(hm.keySet());
+                dataListRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        HashMap<String, HashMap<String, String>> data = (HashMap<String, HashMap<String, String>>)
+                                dataSnapshot.getValue();
+                        for (HashMap.Entry<String, HashMap<String, String>> entry : data.entrySet()) {
+                            String check = entry.getKey();
+                            HashMap<String, String> obj = entry.getValue();
+                            if(friendsList.contains(check)){
+                                mainDataList.add(new UserAccountModel(obj.get("firstName"), obj.get("lastName"),
+                                        obj.get("email"), obj.get("password"), getGender(obj.get("gender")),
+                                        obj.get("dob"),obj.get("cityName"), obj.get("mobileNo"), obj.get("profession")));
+                            }
+                            getData(mainDataList);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+    private void getData(List<UserAccountModel> mainDataList) {
+        dataList = convertList(mainDataList);
         setData();
+    }
+
+    private List<FriendsListAndRequestModel> convertList(List<UserAccountModel> inputList){
+        List<FriendsListAndRequestModel> outputList = new ArrayList<>();
+        for(UserAccountModel obj : inputList){
+            outputList.add(new FriendsListAndRequestModel(1, obj.getFirstName()+obj.getLastName(), obj.getMobileNo()));
+        }
+        return outputList;
     }
 
     public void showInstructions() {
@@ -85,13 +166,13 @@ public class FriendsListFragment extends Fragment implements View.OnClickListene
     }
 
 
-
     public void setData() {
         animRightSwipe = AnimationUtils.loadAnimation(getActivity(), R.anim.trans_right_out);
         animRightSwipe.setDuration(500);
         animLeftSwipe = AnimationUtils.loadAnimation(getActivity(), R.anim.trans_left_out);
         FriendsListAdapter adapter = new FriendsListAdapter(context, dataList);
         friendsListLV.setAdapter(adapter);
+        progressDialog.dismiss();
         friendsListLV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -162,7 +243,7 @@ public class FriendsListFragment extends Fragment implements View.OnClickListene
 
         public void onSwipeRight(int pos) {
             int i = friendsListLV.getFirstVisiblePosition();
-            View view = friendsListLV.getChildAt(pos-i);
+            View view = friendsListLV.getChildAt(pos - i);
             if (view != null) {
                 view.startAnimation(animRightSwipe);
                 Toast.makeText(context, "Message Friend (TODO)!", Toast.LENGTH_LONG).show();
@@ -171,7 +252,7 @@ public class FriendsListFragment extends Fragment implements View.OnClickListene
 
         public void onSwipeLeft(int pos) {
             int i = friendsListLV.getFirstVisiblePosition();
-            View view = friendsListLV.getChildAt(pos-i);
+            View view = friendsListLV.getChildAt(pos - i);
             if (view != null) {
                 view.startAnimation(animLeftSwipe);
                 toDelete = pos;
@@ -217,5 +298,15 @@ public class FriendsListFragment extends Fragment implements View.OnClickListene
 
         }
     }
+
+    private UserAccountModel.Gender getGender(String s){
+        if (s.equalsIgnoreCase("male"))
+            return UserAccountModel.Gender.MALE;
+        else if (s.equalsIgnoreCase("male"))
+            return UserAccountModel.Gender.FEMALE;
+        else
+            return UserAccountModel.Gender.OTHER;
+    }
+
 
 }

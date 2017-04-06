@@ -1,7 +1,5 @@
 package mehwish.ghazi.ui;
 
-import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -17,14 +15,11 @@ import android.util.Patterns;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.NumberPicker;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -35,7 +30,7 @@ import java.io.FileNotFoundException;
 import java.util.Calendar;
 
 import mehwish.ghazi.R;
-import mehwish.ghazi.model.UserAccountBO;
+import mehwish.ghazi.model.UserAccountModel;
 
 /**
  * Created by Devprovider on 3/11/2017.
@@ -81,7 +76,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
             startActivityForResult(intent,IMAGE_KEY);
         } else if (view.getId() == R.id.signup_button) {
             if(checkInputs()){
-                UserAccountBO model = new UserAccountBO(firstName.getText().toString(),
+                UserAccountModel model = new UserAccountModel(firstName.getText().toString(),
                         lastName.getText().toString(), email.getText().toString(), password.getText().toString(),
                         getGender(genderRg), getDob(), cityName.getText().toString(),
                         mobileNumber.getText().toString(), profession.getText().toString());
@@ -124,16 +119,16 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                 .append("/").append(yearPicker.getValue()).toString();
     }
 
-    private UserAccountBO.Gender getGender(RadioGroup rg){
+    private UserAccountModel.Gender getGender(RadioGroup rg){
         int rbId = rg.getCheckedRadioButtonId();
         RadioButton rb = (RadioButton)rg.findViewById(rbId);
         String gender = rb.getText().toString();
         if (gender.equalsIgnoreCase("male"))
-            return UserAccountBO.Gender.MALE;
+            return UserAccountModel.Gender.MALE;
         else if (gender.equalsIgnoreCase("male"))
-            return UserAccountBO.Gender.FEMALE;
+            return UserAccountModel.Gender.FEMALE;
         else
-            return UserAccountBO.Gender.OTHER;
+            return UserAccountModel.Gender.OTHER;
     }
 
     private boolean checkInputs(){
@@ -316,4 +311,11 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         factoryOptions2.inSampleSize = scale;
         return BitmapFactory.decodeStream(getContentResolver().openInputStream(selectedImage),null,factoryOptions2);
     }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+        overridePendingTransition(0, R.anim.exit_activity);
+        super.onBackPressed();
+    } // onBackPressed
 }

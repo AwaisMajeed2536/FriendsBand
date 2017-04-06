@@ -36,7 +36,6 @@
                 android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
                 android:hint="@string/firstName"
                 android:inputType="textCapWords|textNoSuggestions|textVisiblePassword"
-                android:selectAllOnFocus="false"
                 android:textSize="@dimen/activity_main_roundbutton_textsize" />
 
             <EditText

@@ -20,7 +20,6 @@ import mehwish.ghazi.fragment.FriendsListFragment;
 import mehwish.ghazi.fragment.FriendsRequestFragment;
 import mehwish.ghazi.fragment.HomeFragment;
 import mehwish.ghazi.fragment.TrackFriendListFragment;
-import mehwish.ghazi.model.UserAccountBO;
 
 public class HomeActivity extends AppCompatActivity implements FragmentDrawer.FragmentDrawerListener {
 

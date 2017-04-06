@@ -4,7 +4,7 @@ package mehwish.ghazi.model;
  * Created by Devprovider on 3/11/2017.
  */
 
-public class UserAccountBO {
+public class UserAccountModel {
     private String firstName;
     private String lastName;
     private String email;
@@ -15,10 +15,10 @@ public class UserAccountBO {
     private String mobileNo;
     private String profession;
 
-    public UserAccountBO() {
+    public UserAccountModel() {
     }
 
-    public UserAccountBO(String firstName, String lastName, String email, String password, Gender gender, String dob, String cityName, String mobileNo, String profession) {
+    public UserAccountModel(String firstName, String lastName, String email, String password, Gender gender, String dob, String cityName, String mobileNo, String profession) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
