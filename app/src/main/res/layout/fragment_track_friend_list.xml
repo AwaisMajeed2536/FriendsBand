@@ -3,13 +3,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_margin="5dp"
     android:orientation="vertical">
 
     <ListView
         android:id="@+id/track_friend_lv"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="5dp" />
+        android:layout_height="match_parent" />
 
 </LinearLayout>

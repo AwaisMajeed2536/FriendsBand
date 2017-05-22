@@ -3,14 +3,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_margin="5dp"
     android:orientation="vertical"
     tools:context="mehwish.ghazi.fragment.FriendsRequestFragment">
 
     <ListView
         android:id="@+id/friend_requests_lv"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="5dp" />
+        android:layout_height="match_parent" />
 
 </LinearLayout>

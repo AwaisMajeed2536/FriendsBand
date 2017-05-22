@@ -3,6 +3,8 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
+    <dimen name="nav_bar_font_size">22sp</dimen>
+
     <dimen name="activity_main_coaching">18sp</dimen>
     <dimen name="activity_main_coaching_marginBottom">8dp</dimen>
     <dimen name="activity_main_coachingdetail1">14sp</dimen>

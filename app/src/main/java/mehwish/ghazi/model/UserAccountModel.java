@@ -1,10 +1,13 @@
 package mehwish.ghazi.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by Devprovider on 3/11/2017.
  */
 
-public class UserAccountModel {
+public class UserAccountModel implements Parcelable{
     private String firstName;
     private String lastName;
     private String email;
@@ -100,6 +103,16 @@ public class UserAccountModel {
 
     public void setGender(Gender gender) {
         this.gender = gender;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+
     }
 
     public static enum Gender {MALE, FEMALE, OTHER}

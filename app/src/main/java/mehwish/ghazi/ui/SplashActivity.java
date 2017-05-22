@@ -22,6 +22,16 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         context = SplashActivity.this;
+        checkLogin();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        checkLogin();
+    }
+
+    private void checkLogin(){
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -29,9 +39,11 @@ public class SplashActivity extends AppCompatActivity {
                 if (sp.getBoolean("isUserAlreadyLoggedIn",false)){
                     startActivity(new Intent(context, HomeActivity.class));
                     overridePendingTransition(R.anim.trans_left_in, R.anim.trans_left_out);
+                    finish();
                 }else {
                     startActivity(new Intent(context, LandingActivity.class));
                     overridePendingTransition(R.anim.trans_left_in, R.anim.trans_left_out);
+                    finish();
                 }
             }
         },1500);

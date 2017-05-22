@@ -1,5 +1,6 @@
 package mehwish.ghazi.ui;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -32,6 +33,7 @@ public class HomeActivity extends AppCompatActivity implements FragmentDrawer.Fr
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        getSupportFragmentManager().beginTransaction().add(R.id.container_body, new HomeFragment()).commit();
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
@@ -111,6 +113,7 @@ public class HomeActivity extends AppCompatActivity implements FragmentDrawer.Fr
             case 5:
                 SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(HomeActivity.this);
                 sp.edit().putBoolean("isUserAlreadyLoggedIn",false).apply();
+                startActivity(new Intent(this, LandingActivity.class));
                 finish();
                 break;
             default:

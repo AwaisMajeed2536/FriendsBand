@@ -4,12 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:layout_margin="5dp"
     tools:context="mehwish.ghazi.fragment.FriendsListFragment">
 
     <ListView
         android:id="@+id/friends_list_LV"
-        android:padding="5dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 

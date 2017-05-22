@@ -30,6 +30,7 @@ import java.io.FileNotFoundException;
 import java.util.Calendar;
 
 import mehwish.ghazi.R;
+import mehwish.ghazi.helper.UtilHelpers;
 import mehwish.ghazi.model.UserAccountModel;
 
 /**
@@ -60,10 +61,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         super.setContentView(R.layout.activity_signup);
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setTitle("Sign Up");
+        UtilHelpers.initGenericToolbar(this, "Sign up", true);
         initView();
         setDateView();
     }

@@ -2,8 +2,10 @@ package mehwish.ghazi.fragment;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -58,6 +60,8 @@ public class FriendsListFragment extends Fragment implements View.OnClickListene
     private DatabaseReference dataListRef;
     private List<String> friendsList;
     private ProgressDialog progressDialog;
+    private String loggedInUserName;
+
 
     public FriendsListFragment() {
         // Required empty public constructor
@@ -75,6 +79,8 @@ public class FriendsListFragment extends Fragment implements View.OnClickListene
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         context = getActivity();
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        loggedInUserName = sp.getString("fbLoggedInUser", "");
         progressDialog = new ProgressDialog(context);
         progressDialog.setTitle("Fetching Friend's List");
         progressDialog.setMessage("Please wait...");
@@ -82,7 +88,7 @@ public class FriendsListFragment extends Fragment implements View.OnClickListene
         progressDialog.show();
         friendsListLV = (ListView) view.findViewById(R.id.friends_list_LV);
         friendsListRef = FirebaseDatabase.getInstance().getReferenceFromUrl
-                ("https://friendsband-a3dc9.firebaseio.com/root/friendsRecord/awais_m2536@gmail_con");
+                ("https://friendsband-a3dc9.firebaseio.com/root/friendsRecord/" + loggedInUserName);
 
         dataListRef = FirebaseDatabase.getInstance().getReferenceFromUrl
                 ("https://friendsband-a3dc9.firebaseio.com/root/userData/");
@@ -176,8 +182,8 @@ public class FriendsListFragment extends Fragment implements View.OnClickListene
         friendsListLV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String name = dataList.get(position).getFriendContactNo();
-                FriendsDetailsFragment fragment = FriendsDetailsFragment.newInstance(name);
+                UserAccountModel dataModel = mainDataList.get(position);
+                FriendsDetailsFragment fragment = FriendsDetailsFragment.newInstance(dataModel);
                 getActivity().getSupportFragmentManager().beginTransaction().add(R.id.container_body, fragment).
                         addToBackStack(FRAGMENT_TAG).commit();
             }

@@ -25,6 +25,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import mehwish.ghazi.R;
+import mehwish.ghazi.helper.UtilHelpers;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener, ValueEventListener {
 
@@ -38,14 +39,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         super.setContentView(R.layout.activity_login);
-        try {
-            Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
-            setSupportActionBar(mToolbar);
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
-            getSupportActionBar().setTitle("Login");
-        } catch (Exception e){
-            Log.e("Login Activity",e.getMessage());
-        }
+        UtilHelpers.initGenericToolbar(this, "Login", true);
         initView();
     }
 
@@ -111,6 +105,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 if (checkCredentials(email,password)){
                     SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
                     sp.edit().putBoolean("isUserAlreadyLoggedIn",true).apply();
+                    sp.edit().putString("fbLoggedInUser", email).apply();
                     dialog.dismiss();
                     loginSuccessful = true;
                     startActivity(new Intent(LoginActivity.this,HomeActivity.class));

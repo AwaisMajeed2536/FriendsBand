@@ -6,7 +6,7 @@
     android:orientation="vertical">
 
     <ImageView
-        android:id="@+id/details_friend_iv"
+        android:id="@+id/details_friend_IV"
         android:layout_width="160dp"
         android:layout_height="160dp"
         android:layout_centerHorizontal="true"
@@ -16,12 +16,13 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/details_friend_iv"
+        android:layout_below="@+id/details_friend_IV"
         android:layout_margin="10dp"
         android:orientation="vertical"
         android:padding="5dp">
 
         <TextView
+            android:id="@+id/details_friend_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Name: "
@@ -29,15 +30,7 @@
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <TextView
-            android:id="@+id/details_friend_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="40dp"
-            android:text="Mehwish Ghazi"
-            android:textColor="#FFFFFF"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-        <TextView
+            android:id="@+id/details_friend_email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -46,16 +39,7 @@
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <TextView
-            android:id="@+id/details_friend_email"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="40dp"
-            android:layout_marginTop="8dp"
-            android:textColor="#FFFFFF"
-            android:text="mehwish.g2536@gmail.com"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-        <TextView
+            android:id="@+id/details_friend_mobile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -64,16 +48,7 @@
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <TextView
-            android:id="@+id/details_friend_mobile"
-            android:layout_width="wrap_content"
-            android:textColor="#FFFFFF"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="40dp"
-            android:layout_marginTop="8dp"
-            android:text="+923012345678"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-        <TextView
+            android:id="@+id/details_friend_hometown"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -82,16 +57,7 @@
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <TextView
-            android:id="@+id/details_friend_hometown"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="40dp"
-            android:layout_marginTop="8dp"
-            android:textColor="#FFFFFF"
-            android:text="Islamabad"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-        <TextView
+            android:id="@+id/details_friend_current_location"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="#FFFFFF"
@@ -99,15 +65,6 @@
             android:text="Current Location:"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
-        <TextView
-            android:id="@+id/details_friend_current_location"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="40dp"
-            android:layout_marginTop="8dp"
-            android:text="Rawalpindi"
-            android:textColor="#FFFFFF"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
     </LinearLayout>
 
 </RelativeLayout>
