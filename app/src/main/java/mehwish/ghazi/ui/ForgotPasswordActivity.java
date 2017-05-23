@@ -21,7 +21,7 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
 
     protected EditText fpEmailEt;
     protected Button fpEmailSubmitButton;
-    private static boolean buttonClicked = false;
+    private static boolean buttonClicked  = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -34,8 +34,8 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
     protected void onResume() {
         super.onResume();
         if(buttonClicked){
-            UtilHelpers.showAlertDialog(this, "Email Sent", "Check your email address to get new password...", "okay",
-                    new AlertDialogCallback() {
+            UtilHelpers.showAlertDialog(this, "Email sent", "please check your inbox to get the new password",
+                    "dismiss", new AlertDialogCallback() {
                         @Override
                         public void onClick() {
                             finish();
@@ -54,18 +54,17 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
     public void onClick(View view) {
         if (view.getId() == R.id.fp_email_submit_button) {
             buttonClicked = true;
+            String email = fpEmailEt.getText().toString();
             Intent i = new Intent(Intent.ACTION_SEND);
             i.setType("message/rfc822");
             i.putExtra(Intent.EXTRA_EMAIL  , new String[]{"mehwish.g2536@gmail.com"});
-            i.putExtra(Intent.EXTRA_SUBJECT, "Forgot Password");
-            i.putExtra(Intent.EXTRA_TEXT   , "I've forgotten the password for my account, please send me a link to reset my" +
-                    "password on the following email addredd " + fpEmailEt.getText());
+            i.putExtra(Intent.EXTRA_SUBJECT, "Password Reset Request");
+            i.putExtra(Intent.EXTRA_TEXT   , "Please reset the password for my following account...\n"+email);
             try {
-                startActivity(Intent.createChooser(i, "Send mail..."));
+                startActivity(Intent.createChooser(i, "Password Reset..."));
             } catch (android.content.ActivityNotFoundException ex) {
                 Toast.makeText(this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
             }
-
         }
     }
 

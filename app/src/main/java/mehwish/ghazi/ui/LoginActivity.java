@@ -25,7 +25,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import mehwish.ghazi.R;
-import mehwish.ghazi.helper.UtilHelpers;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener, ValueEventListener {
 
@@ -39,7 +38,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         super.setContentView(R.layout.activity_login);
-        UtilHelpers.initGenericToolbar(this, "Login", true);
+        try {
+            Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
+            setSupportActionBar(mToolbar);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setTitle("Login");
+        } catch (Exception e){
+            Log.e("Login Activity",e.getMessage());
+        }
         initView();
     }
 
