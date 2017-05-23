@@ -4,9 +4,19 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.icu.text.SimpleDateFormat;
+import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
+
+import com.google.gson.Gson;
+
+import java.text.ParseException;
+import java.util.Date;
 
 import mehwish.ghazi.interfaces.AlertDialogCallback;
+import mehwish.ghazi.model.UserAccountModel;
 
 /**
  * Created by Devprovider on 23/05/2017.
@@ -16,6 +26,7 @@ public class UtilHelpers {
 
 
     private static ProgressDialog waitDialog;
+    public static Context staticContext;
 
     public static void showAlertDialog(Context context, @Nullable String title, @Nullable String message) {
         AlertDialog dialog = new AlertDialog.Builder(context).setTitle(title)
@@ -74,5 +85,29 @@ public class UtilHelpers {
             e.printStackTrace();
 
         }
+    }
+
+    private static final String USER_INFO_KEY = "user_info_key";
+
+    public static void createLoginSession(Context context, UserAccountModel userInfo) {
+        String json = new Gson().toJson(userInfo);
+        PreferenceManager.getDefaultSharedPreferences(context).edit().putString(USER_INFO_KEY, json).apply();
+    }
+
+    public static boolean isUserLoggedIn(Context context) {
+        String userInfo = PreferenceManager.getDefaultSharedPreferences(context).getString(USER_INFO_KEY, null);
+        return userInfo != null;
+    }
+
+    @Nullable
+    public static UserAccountModel getLoggedInUser(){
+        String userInfo = PreferenceManager.getDefaultSharedPreferences(staticContext).getString(USER_INFO_KEY, null);
+        if (userInfo == null)
+            return null;
+        return new Gson().fromJson(userInfo, UserAccountModel.class);
+    }
+
+    public static void endLoginSession(Context context) {
+        PreferenceManager.getDefaultSharedPreferences(context).edit().clear().apply();
     }
 }

@@ -21,6 +21,7 @@ import mehwish.ghazi.fragment.FriendsListFragment;
 import mehwish.ghazi.fragment.FriendsRequestFragment;
 import mehwish.ghazi.fragment.HomeFragment;
 import mehwish.ghazi.fragment.TrackFriendListFragment;
+import mehwish.ghazi.helper.UtilHelpers;
 
 public class HomeActivity extends AppCompatActivity implements FragmentDrawer.FragmentDrawerListener {
 
@@ -111,8 +112,10 @@ public class HomeActivity extends AppCompatActivity implements FragmentDrawer.Fr
                 title = getString(R.string.title_analyse_friend);
                 break;
             case 5:
-                SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(HomeActivity.this);
-                sp.edit().putBoolean("isUserAlreadyLoggedIn",false).apply();
+                startActivity(new Intent(this, EditProfileActivity.class));
+                break;
+            case 6:
+                UtilHelpers.endLoginSession(this);
                 startActivity(new Intent(this, LandingActivity.class));
                 finish();
                 break;

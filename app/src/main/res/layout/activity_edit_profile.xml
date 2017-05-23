@@ -1,9 +1,104 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="mehwish.ghazi.ui.EditProfileActivity">
+    tools:context="mehwish.ghazi.ui.SignupActivity">
 
-</android.support.constraint.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/toolbar" />
+
+        <RelativeLayout xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/main_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/WHITE">
+
+            <ImageView
+                android:id="@+id/profile_pictuer_signup"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:src="@drawable/profile_picture_signup" />
+
+            <EditText
+                android:id="@+id/first_name"
+                style="@style/roundEditText"
+                android:layout_below="@+id/profile_pictuer_signup"
+                android:layout_marginTop="@dimen/margin_all_signup"
+                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
+                android:hint="@string/firstName"
+                android:inputType="textCapWords|textNoSuggestions|textVisiblePassword"
+                android:textSize="@dimen/activity_main_roundbutton_textsize" />
+
+            <EditText
+                android:id="@+id/last_name"
+                style="@style/roundEditText"
+                android:layout_below="@+id/first_name"
+                android:layout_marginTop="@dimen/margin_all_signup"
+                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
+                android:hint="@string/lastName"
+                android:inputType="textCapWords|textNoSuggestions|textVisiblePassword"
+                android:textSize="@dimen/activity_main_roundbutton_textsize" />
+
+            <EditText
+                android:id="@+id/password"
+                style="@style/roundEditText"
+                android:layout_below="@+id/last_name"
+                android:layout_marginTop="@dimen/margin_all_signup"
+                android:hint="@string/password"
+                android:inputType="textPassword"
+                android:maxLines="1"
+                android:paddingRight="50dp"
+                android:textSize="@dimen/activity_main_roundbutton_textsize" />
+
+            <EditText
+                android:id="@+id/city_name"
+                style="@style/roundEditText"
+                android:layout_below="@+id/password"
+                android:layout_marginTop="@dimen/margin_all_signup"
+                android:hint="@string/cityName"
+                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                android:inputType="textAutoComplete"
+                android:textSize="@dimen/activity_main_roundbutton_textsize" />
+
+            <EditText
+                android:id="@+id/mobile_number"
+                style="@style/roundEditText"
+                android:layout_below="@+id/city_name"
+                android:layout_marginTop="@dimen/margin_all_signup"
+                android:hint="@string/mobileNo"
+                android:inputType="number"
+                android:textSize="@dimen/activity_main_roundbutton_textsize" />
+
+            <EditText
+                android:id="@+id/profession"
+                style="@style/roundEditText"
+                android:layout_below="@+id/mobile_number"
+                android:layout_marginTop="@dimen/margin_all_signup"
+                android:hint="@string/Profession"
+                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                android:inputType="textAutoComplete"
+                android:textSize="@dimen/activity_main_roundbutton_textsize" />
+
+
+            <Button
+                android:id="@+id/profile_update_button"
+                style="@style/roundButton"
+                android:layout_below="@+id/profession"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="@dimen/margin_all_signup"
+                android:gravity="center|center_vertical"
+                android:text="Update Profile" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+</ScrollView>

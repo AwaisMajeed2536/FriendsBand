@@ -19,6 +19,7 @@
     <string name="nav_item_view_friend_requests">View Friend Requests</string>
     <string name="nav_item_view_locatoin_of_friend">View Friend\'s Location</string>
     <string name="nav_item_analyse_friend">Analyse Friend</string>
+    <string name="nav_item_edit_profile">Edit Profile</string>
     <string name="nav_item_logout">Logout</string>
 
     <!-- navigation drawer item labels  -->
@@ -28,6 +29,7 @@
         <item>@string/nav_item_view_friend_requests</item>
         <item>@string/nav_item_view_locatoin_of_friend</item>
         <item>@string/nav_item_analyse_friend</item>
+        <item>@string/nav_item_edit_profile</item>
         <item>@string/nav_item_logout</item>
     </string-array>
 

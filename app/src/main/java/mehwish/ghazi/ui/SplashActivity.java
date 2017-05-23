@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
 import mehwish.ghazi.R;
+import mehwish.ghazi.helper.UtilHelpers;
 
 /**
  * Created by Devprovider on 3/11/2017.
@@ -22,6 +23,7 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         context = SplashActivity.this;
+        UtilHelpers.staticContext = context;
         checkLogin();
     }
 
@@ -35,8 +37,8 @@ public class SplashActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-                if (sp.getBoolean("isUserAlreadyLoggedIn",false)){
+
+                if (UtilHelpers.isUserLoggedIn(SplashActivity.this)){
                     startActivity(new Intent(context, HomeActivity.class));
                     overridePendingTransition(R.anim.trans_left_in, R.anim.trans_left_out);
                     finish();

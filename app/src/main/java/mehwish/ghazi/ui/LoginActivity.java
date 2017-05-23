@@ -25,6 +25,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import mehwish.ghazi.R;
+import mehwish.ghazi.helper.UtilHelpers;
+import mehwish.ghazi.model.UserAccountModel;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener, ValueEventListener {
 
@@ -32,7 +34,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected Button forgetPassword;
     protected EditText userEmailET;
     protected EditText userPasswordET;
-    protected ProgressDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,8 +44,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             setSupportActionBar(mToolbar);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
             getSupportActionBar().setTitle("Login");
-        } catch (Exception e){
-            Log.e("Login Activity",e.getMessage());
+        } catch (Exception e) {
+            Log.e("Login Activity", e.getMessage());
         }
         initView();
     }
@@ -52,17 +53,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.login_button) {
-            if(checkInputs()) {
-                userPasswordET.setEnabled(false);
-                userEmailET.setEnabled(false);
-                dialog = new ProgressDialog(LoginActivity.this);
-                dialog.setTitle("Checking Credentials...");
-                dialog.setMessage("Please wait.");
-                dialog.setIndeterminate(true);
-                dialog.setCancelable(false);
-                dialog.show();
+            if (checkInputs()) {
+                UtilHelpers.showWaitDialog(this, "Checking Credentials...", "Please wait.");
+                String email = userEmailET.getText().toString();
+                email = email.replace(".", "_");
                 DatabaseReference mRef = FirebaseDatabase.getInstance().
-                        getReferenceFromUrl("https://friendsband-a3dc9.firebaseio.com/root/userData/");
+                        getReferenceFromUrl("https://friendsband-a3dc9.firebaseio.com/root/userData/" + email);
                 mRef.keepSynced(true);
                 mRef.addValueEventListener(this);
             }
@@ -72,12 +68,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
-    public boolean checkInputs(){
-        if(!Patterns.EMAIL_ADDRESS.matcher(userEmailET.getText()).matches()){
+    public boolean checkInputs() {
+        if (!Patterns.EMAIL_ADDRESS.matcher(userEmailET.getText()).matches()) {
             userEmailET.setError("Enter a valid email address");
             userEmailET.requestFocus();
             return false;
-        } else if(userPasswordET.getText().toString().isEmpty()){
+        } else if (userPasswordET.getText().toString().isEmpty()) {
             userPasswordET.setError("Enter a password!");
             userPasswordET.requestFocus();
             return false;
@@ -94,40 +90,28 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         userPasswordET = (EditText) findViewById(R.id.user_password_edittext);
     }
 
-    private final boolean checkCredentials(String email, String password) {
-        return userEmailET.getText().toString().replace(".", "_").equals(email)
-                && userPasswordET.getText().toString().equals(password);
+    private final boolean checkCredentials(String password) {
+        return userPasswordET.getText().toString().equals(password);
     }
 
     @Override
     public void onDataChange(DataSnapshot dataSnapshot) {
-        try {
-            boolean loginSuccessful = false;
-            HashMap<String, HashMap<String, String>> data = (HashMap<String, HashMap<String, String>>) dataSnapshot.getValue();
-            for (HashMap.Entry<String, HashMap<String, String>> entry : data.entrySet()) {
-                String email = entry.getKey();
-                HashMap<String, String> tempValue = entry.getValue();
-                String password = tempValue.get("password");
-                if (checkCredentials(email,password)){
-                    SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
-                    sp.edit().putBoolean("isUserAlreadyLoggedIn",true).apply();
-                    sp.edit().putString("fbLoggedInUser", email).apply();
-                    dialog.dismiss();
-                    loginSuccessful = true;
-                    startActivity(new Intent(LoginActivity.this,HomeActivity.class));
-                    overridePendingTransition(R.anim.trans_left_in,R.anim.trans_left_out);
+        UtilHelpers.dismissWaitDialog();
+        if (dataSnapshot.getValue() == null) {
+            UtilHelpers.showAlertDialog(LoginActivity.this, "Login Failed", "Invalid Credentials...");
+        } else {
+            try {
+                UserAccountModel model =  dataSnapshot.getValue(UserAccountModel.class);
+                if (checkCredentials(model.getPassword())) {
+                    UtilHelpers.createLoginSession(LoginActivity.this, model);
+                    startActivity(new Intent(LoginActivity.this, HomeActivity.class));
+                    overridePendingTransition(R.anim.trans_left_in, R.anim.trans_left_out);
                     finish();
                 }
+
+            } catch (Exception e) {
+                Log.e("LoginActivity", e.getMessage());
             }
-            if(!loginSuccessful){
-                Toast.makeText(LoginActivity.this, "Invalid Credentials!", Toast.LENGTH_SHORT).show();
-                userEmailET.setEnabled(true);
-                userEmailET.requestFocus();
-                userPasswordET.setEnabled(true);
-                dialog.dismiss();
-            }
-        } catch (Exception e) {
-            Log.e("LoginActivity", e.getMessage());
         }
     }
 
