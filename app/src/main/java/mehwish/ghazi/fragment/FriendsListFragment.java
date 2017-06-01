@@ -38,6 +38,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import mehwish.ghazi.R;
 import mehwish.ghazi.adapter.FriendsListAdapter;
+import mehwish.ghazi.helper.UtilHelpers;
 import mehwish.ghazi.model.FriendsListAndRequestModel;
 import mehwish.ghazi.model.UserAccountModel;
 
@@ -60,7 +61,6 @@ public class FriendsListFragment extends Fragment implements View.OnClickListene
     private DatabaseReference dataListRef;
     private List<String> friendsList;
     private ProgressDialog progressDialog;
-    private String loggedInUserName;
 
 
     public FriendsListFragment() {
@@ -79,8 +79,8 @@ public class FriendsListFragment extends Fragment implements View.OnClickListene
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         context = getActivity();
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        loggedInUserName = sp.getString("fbLoggedInUser", "");
+
+        UserAccountModel model = UtilHelpers.getLoggedInUser();
         progressDialog = new ProgressDialog(context);
         progressDialog.setTitle("Fetching Friend's List");
         progressDialog.setMessage("Please wait...");
@@ -88,7 +88,7 @@ public class FriendsListFragment extends Fragment implements View.OnClickListene
         progressDialog.show();
         friendsListLV = (ListView) view.findViewById(R.id.friends_list_LV);
         friendsListRef = FirebaseDatabase.getInstance().getReferenceFromUrl
-                ("https://friendsband-a3dc9.firebaseio.com/root/friendsRecord/" + loggedInUserName);
+                ("https://friendsband-a3dc9.firebaseio.com/root/friendsRecord/"  + model.getEmail().replace(".","_"));
 
         dataListRef = FirebaseDatabase.getInstance().getReferenceFromUrl
                 ("https://friendsband-a3dc9.firebaseio.com/root/userData/");
@@ -102,31 +102,35 @@ public class FriendsListFragment extends Fragment implements View.OnClickListene
         friendsListRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                friendsList = new ArrayList<String>();
-                HashMap<String, String> hm = (HashMap<String, String>) dataSnapshot.getValue();
-                friendsList = new ArrayList<String>(hm.keySet());
-                dataListRef.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        HashMap<String, HashMap<String, String>> data = (HashMap<String, HashMap<String, String>>)
-                                dataSnapshot.getValue();
-                        for (HashMap.Entry<String, HashMap<String, String>> entry : data.entrySet()) {
-                            String check = entry.getKey();
-                            HashMap<String, String> obj = entry.getValue();
-                            if(friendsList.contains(check)){
-                                mainDataList.add(new UserAccountModel(obj.get("firstName"), obj.get("lastName"),
-                                        obj.get("email"), obj.get("password"), getGender(obj.get("gender")),
-                                        obj.get("dob"),obj.get("cityName"), obj.get("mobileNo"), obj.get("profession")));
+                try {
+                    friendsList = new ArrayList<String>();
+                    HashMap<String, String> hm = (HashMap<String, String>) dataSnapshot.getValue();
+                    friendsList = new ArrayList<String>(hm.keySet());
+                    dataListRef.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            HashMap<String, HashMap<String, String>> data = (HashMap<String, HashMap<String, String>>)
+                                    dataSnapshot.getValue();
+                            for (HashMap.Entry<String, HashMap<String, String>> entry : data.entrySet()) {
+                                String check = entry.getKey();
+                                HashMap<String, String> obj = entry.getValue();
+                                if (friendsList.contains(check)) {
+                                    mainDataList.add(new UserAccountModel(obj.get("firstName"), obj.get("lastName"),
+                                            obj.get("email"), String.valueOf(obj.get("password")), getGender(obj.get("gender")),
+                                            obj.get("dob"), obj.get("cityName"), obj.get("mobileNo"), obj.get("profession")));
+                                }
+                                getData(mainDataList);
                             }
-                            getData(mainDataList);
                         }
-                    }
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
 
-                    }
-                });
+                        }
+                    });
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
             }
 
             @Override

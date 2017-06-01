@@ -31,6 +31,9 @@ import java.util.List;
 import mehwish.ghazi.R;
 import mehwish.ghazi.adapter.FriendRequestsAdapter;
 import mehwish.ghazi.adapter.FriendsListAdapter;
+import mehwish.ghazi.helper.UtilHelpers;
+import mehwish.ghazi.interfaces.CLICKTYPE;
+import mehwish.ghazi.interfaces.TwoButtonAlertDialogCallback;
 import mehwish.ghazi.model.FriendsListAndRequestModel;
 import mehwish.ghazi.model.UserAccountModel;
 
@@ -43,7 +46,7 @@ public class FriendsRequestFragment extends Fragment {
     private static final String FRAGMENT_TAG = "FRIENDS_REQUEST_FRAGMENT";
     private Context context;
     private ListView friendRequestLV;
-    private List<FriendsListAndRequestModel> dataList;
+    private List<FriendsListAndRequestModel> dataList = new ArrayList<>();
     private DatabaseReference requestRef;
     private DatabaseReference addFriendRef;
     private String loggedInUserName;
@@ -64,7 +67,7 @@ public class FriendsRequestFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_friend_requests,container,false);
+        return inflater.inflate(R.layout.fragment_friend_requests, container, false);
     }
 
     @Override
@@ -77,8 +80,7 @@ public class FriendsRequestFragment extends Fragment {
         progressDialog.setIcon(R.mipmap.fetching_icon);
         progressDialog.show();
         friendRequestLV = (ListView) view.findViewById(R.id.friend_requests_lv);
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        loggedInUserName = sp.getString("fbLoggedInUser", "");
+        loggedInUserName = UtilHelpers.getLoggedInUser().getEmail().replace(".", "_");
         requestRef = FirebaseDatabase.getInstance()
                 .getReferenceFromUrl("https://friendsband-a3dc9.firebaseio.com/root/requestRecords/" + loggedInUserName);
         addFriendRef = FirebaseDatabase.getInstance()
@@ -88,20 +90,30 @@ public class FriendsRequestFragment extends Fragment {
         requestRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getValue() == null) {
+                    progressDialog.dismiss();
+                    UtilHelpers.showAlertDialog(getActivity(), "Sorry!","you have no pending friend requests...");
+                    return;
+                }
+
                 HashMap<String, String> hm = (HashMap<String, String>) dataSnapshot.getValue();
                 friendsList = new ArrayList<String>(hm.keySet());
                 dataListRef.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
+                        progressDialog.dismiss();
+                        if (dataSnapshot.getValue() == null) {
+                            return;
+                        }
                         HashMap<String, HashMap<String, String>> data = (HashMap<String, HashMap<String, String>>)
                                 dataSnapshot.getValue();
                         for (HashMap.Entry<String, HashMap<String, String>> entry : data.entrySet()) {
                             String check = entry.getKey();
                             HashMap<String, String> obj = entry.getValue();
-                            if(friendsList.contains(check)){
+                            if (friendsList.contains(check)) {
                                 mainDataList.add(new UserAccountModel(obj.get("firstName"), obj.get("lastName"),
-                                        obj.get("email"), obj.get("password"), getGender(obj.get("gender")),
-                                        obj.get("dob"),obj.get("cityName"), obj.get("mobileNo"), obj.get("profession")));
+                                        obj.get("email"), String.valueOf(obj.get("password")), getGender(obj.get("gender")),
+                                        obj.get("dob"), obj.get("cityName"), obj.get("mobileNo"), obj.get("profession")));
                             }
                             getData(mainDataList);
                         }
@@ -122,10 +134,10 @@ public class FriendsRequestFragment extends Fragment {
     }
 
 
-    private List<FriendsListAndRequestModel> convertList(List<UserAccountModel> inputList){
+    private List<FriendsListAndRequestModel> convertList(List<UserAccountModel> inputList) {
         List<FriendsListAndRequestModel> outputList = new ArrayList<>();
-        for(UserAccountModel obj : inputList){
-            outputList.add(new FriendsListAndRequestModel(1, obj.getFirstName()+obj.getLastName(), obj.getMobileNo()));
+        for (UserAccountModel obj : inputList) {
+            outputList.add(new FriendsListAndRequestModel(1, obj.getFirstName() + obj.getLastName(), obj.getMobileNo()));
         }
         return outputList;
     }
@@ -138,14 +150,26 @@ public class FriendsRequestFragment extends Fragment {
     public void setData() {
         FriendsListAdapter adapter = new FriendsListAdapter(context, dataList);
         friendRequestLV.setAdapter(adapter);
-        progressDialog.dismiss();
         friendRequestLV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                UserAccountModel dataModel = mainDataList.get(position);
-                FriendsDetailsFragment fragment = FriendsDetailsFragment.newInstance(dataModel);
-                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.container_body, fragment).
-                        addToBackStack(FRAGMENT_TAG).commit();
+                final UserAccountModel dataModel = mainDataList.get(position);
+                final String mail = dataModel.getEmail().replace(".", "_");
+                UtilHelpers.showAlertDialog(getActivity(), dataModel.getFirstName(), "Accept Request?",
+                        "Accept", "Reject", new TwoButtonAlertDialogCallback() {
+                            @Override
+                            public void onClick(CLICKTYPE type) {
+                                if (type == CLICKTYPE.POSITIVE) {
+                                    requestRef.child(mail).setValue(null);
+                                    addFriendRef.child(mail).child(dataModel.getEmail().replace(".","_")).setValue("true");
+                                } else {
+                                    requestRef.child(mail).setValue(null);
+                                }
+                            }
+                        });
+                //FriendsDetailsFragment fragment = FriendsDetailsFragment.newInstance(dataModel);
+                //getActivity().getSupportFragmentManager().beginTransaction().add(R.id.container_body, fragment).
+                //addToBackStack(FRAGMENT_TAG).commit();
             }
         });
 
@@ -168,7 +192,7 @@ public class FriendsRequestFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.add_friend:
 
                 break;
@@ -179,7 +203,7 @@ public class FriendsRequestFragment extends Fragment {
         return true;
     }
 
-    private UserAccountModel.Gender getGender(String s){
+    private UserAccountModel.Gender getGender(String s) {
         if (s.equalsIgnoreCase("male"))
             return UserAccountModel.Gender.MALE;
         else if (s.equalsIgnoreCase("male"))

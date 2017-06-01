@@ -16,6 +16,8 @@ import java.text.ParseException;
 import java.util.Date;
 
 import mehwish.ghazi.interfaces.AlertDialogCallback;
+import mehwish.ghazi.interfaces.CLICKTYPE;
+import mehwish.ghazi.interfaces.TwoButtonAlertDialogCallback;
 import mehwish.ghazi.model.UserAccountModel;
 
 /**
@@ -47,6 +49,23 @@ public class UtilHelpers {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         callback.onClick();
+                    }
+                }).create();
+        dialog.show();
+    }
+    public static void showAlertDialog(Context context, @Nullable String title, @Nullable String message,
+                                       String positiveBtnTxt, String negativeBtnTxt, final TwoButtonAlertDialogCallback callback) {
+        AlertDialog dialog = new AlertDialog.Builder(context).setTitle(title)
+                .setMessage("" + message).setCancelable(true)
+                .setPositiveButton(positiveBtnTxt, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        callback.onClick(CLICKTYPE.POSITIVE);
+                    }
+                }).setNegativeButton(negativeBtnTxt, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        callback.onClick(CLICKTYPE.NEGATIVE);
                     }
                 }).create();
         dialog.show();
@@ -90,11 +109,13 @@ public class UtilHelpers {
     private static final String USER_INFO_KEY = "user_info_key";
 
     public static void createLoginSession(Context context, UserAccountModel userInfo) {
+        staticContext = context;
         String json = new Gson().toJson(userInfo);
         PreferenceManager.getDefaultSharedPreferences(context).edit().putString(USER_INFO_KEY, json).apply();
     }
 
     public static boolean isUserLoggedIn(Context context) {
+        staticContext = context;
         String userInfo = PreferenceManager.getDefaultSharedPreferences(context).getString(USER_INFO_KEY, null);
         return userInfo != null;
     }

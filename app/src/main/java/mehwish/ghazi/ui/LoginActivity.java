@@ -28,7 +28,7 @@ import mehwish.ghazi.R;
 import mehwish.ghazi.helper.UtilHelpers;
 import mehwish.ghazi.model.UserAccountModel;
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener, ValueEventListener {
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
     protected Button loginButton;
     protected Button forgetPassword;
@@ -59,8 +59,36 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 email = email.replace(".", "_");
                 DatabaseReference mRef = FirebaseDatabase.getInstance().
                         getReferenceFromUrl("https://friendsband-a3dc9.firebaseio.com/root/userData/" + email);
-                mRef.keepSynced(true);
-                mRef.addValueEventListener(this);
+                mRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        UtilHelpers.dismissWaitDialog();
+                        if (dataSnapshot.getValue() == null) {
+                            UtilHelpers.showAlertDialog(LoginActivity.this, "Login Failed", "Invalid Credentials...");
+                        } else {
+                            try {
+                                UserAccountModel model = dataSnapshot.getValue(UserAccountModel.class);
+                                if (checkCredentials(model.getPassword())) {
+                                    UtilHelpers.createLoginSession(LoginActivity.this, model);
+                                    startActivity(new Intent(LoginActivity.this, HomeActivity.class));
+                                    overridePendingTransition(R.anim.trans_left_in, R.anim.trans_left_out);
+                                    finish();
+                                } else {
+                                    UtilHelpers.showAlertDialog
+                                            (LoginActivity.this, "Login Failed", "Invalid Credentials...");
+                                }
+
+                            } catch (Exception e) {
+                                Log.e("LoginActivity", e.getMessage());
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
             }
         } else if (view.getId() == R.id.forget_password) {
             startActivity(new Intent(LoginActivity.this, ForgotPasswordActivity.class));
@@ -92,32 +120,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private final boolean checkCredentials(String password) {
         return userPasswordET.getText().toString().equals(password);
-    }
-
-    @Override
-    public void onDataChange(DataSnapshot dataSnapshot) {
-        UtilHelpers.dismissWaitDialog();
-        if (dataSnapshot.getValue() == null) {
-            UtilHelpers.showAlertDialog(LoginActivity.this, "Login Failed", "Invalid Credentials...");
-        } else {
-            try {
-                UserAccountModel model =  dataSnapshot.getValue(UserAccountModel.class);
-                if (checkCredentials(model.getPassword())) {
-                    UtilHelpers.createLoginSession(LoginActivity.this, model);
-                    startActivity(new Intent(LoginActivity.this, HomeActivity.class));
-                    overridePendingTransition(R.anim.trans_left_in, R.anim.trans_left_out);
-                    finish();
-                }
-
-            } catch (Exception e) {
-                Log.e("LoginActivity", e.getMessage());
-            }
-        }
-    }
-
-    @Override
-    public void onCancelled(DatabaseError databaseError) {
-
     }
 
     @Override
