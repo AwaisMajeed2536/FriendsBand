@@ -149,7 +149,7 @@ public class FriendsListFragment extends Fragment implements View.OnClickListene
     private List<FriendsListAndRequestModel> convertList(List<UserAccountModel> inputList){
         List<FriendsListAndRequestModel> outputList = new ArrayList<>();
         for(UserAccountModel obj : inputList){
-            outputList.add(new FriendsListAndRequestModel(1, obj.getFirstName()+obj.getLastName(), obj.getMobileNo()));
+            outputList.add(new FriendsListAndRequestModel(1, obj.getFirstName()+obj.getLastName(), obj.getMobileNo(), obj.getEmail()));
         }
         return outputList;
     }
@@ -215,11 +215,11 @@ public class FriendsListFragment extends Fragment implements View.OnClickListene
         unfriend.setOnClickListener(this);
     }
 
-    public void getTempData() {
-        for (int i = 0; i < 12; i++) {
-            dataList.add(new FriendsListAndRequestModel(0, "Mehwish Ghazi" + i, "+92312345678" + i));
-        }
-    }
+//    public void getTempData() {
+//        for (int i = 0; i < 12; i++) {
+//            dataList.add(new FriendsListAndRequestModel(0, "Mehwish Ghazi" + i, "+92312345678" + i));
+//        }
+//    }
 
     @Override
     public void onClick(View v) {

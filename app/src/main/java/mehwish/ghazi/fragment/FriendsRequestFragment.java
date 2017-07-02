@@ -137,7 +137,7 @@ public class FriendsRequestFragment extends Fragment {
     private List<FriendsListAndRequestModel> convertList(List<UserAccountModel> inputList) {
         List<FriendsListAndRequestModel> outputList = new ArrayList<>();
         for (UserAccountModel obj : inputList) {
-            outputList.add(new FriendsListAndRequestModel(1, obj.getFirstName() + obj.getLastName(), obj.getMobileNo()));
+            outputList.add(new FriendsListAndRequestModel(1, obj.getFirstName() + obj.getLastName(), obj.getMobileNo(), obj.getEmail()));
         }
         return outputList;
     }

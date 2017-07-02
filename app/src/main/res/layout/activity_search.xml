@@ -22,17 +22,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
         <RadioButton
-            android:id="@+id/mobile_no"
+            android:id="@+id/mobile_no_rb"
             android:text="Mobile Number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <RadioButton
-            android:id="@+id/email"
-            android:text="Email"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <RadioButton
-            android:id="@+id/Name"
+            android:id="@+id/name_rb"
             android:text="Name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />

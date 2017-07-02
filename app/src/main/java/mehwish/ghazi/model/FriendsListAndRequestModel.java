@@ -8,14 +8,16 @@ public class FriendsListAndRequestModel {
     private int friendImageId;
     private String friendName;
     private String friendContactNo;
+    private String friendEmail;
 
     public FriendsListAndRequestModel() {
     }
 
-    public FriendsListAndRequestModel(int friendImageId, String friendName, String friendContactNo) {
+    public FriendsListAndRequestModel(int friendImageId, String friendName, String friendContactNo, String friendEmail) {
         this.friendImageId = friendImageId;
         this.friendName = friendName;
         this.friendContactNo = friendContactNo;
+        this.friendEmail = friendEmail;
     }
 
     public int getFriendImageId() {
@@ -40,5 +42,13 @@ public class FriendsListAndRequestModel {
 
     public void setFriendContactNo(String friendContactNo) {
         this.friendContactNo = friendContactNo;
+    }
+
+    public String getFriendEmail() {
+        return friendEmail;
+    }
+
+    public void setFriendEmail(String friendEmail) {
+        this.friendEmail = friendEmail;
     }
 }
