@@ -7,7 +7,7 @@ import android.os.Parcelable;
  * Created by Devprovider on 3/11/2017.
  */
 
-public class UserAccountModel implements Parcelable{
+public class UserAccountModel implements Parcelable {
     private String firstName;
     private String lastName;
     private String email;
@@ -32,6 +32,46 @@ public class UserAccountModel implements Parcelable{
         this.mobileNo = mobileNo;
         this.profession = profession;
     }
+
+    public UserAccountModel(String firstName, String lastName, String email, String password, String gender, String dob, String cityName, String mobileNo, String profession) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+        if (gender.equalsIgnoreCase("female"))
+            this.gender = Gender.FEMALE;
+        else if (gender.equalsIgnoreCase("male"))
+            this.gender = Gender.MALE;
+        else
+            this.gender = Gender.OTHER;
+        this.dob = dob;
+        this.cityName = cityName;
+        this.mobileNo = mobileNo;
+        this.profession = profession;
+    }
+
+    protected UserAccountModel(Parcel in) {
+        firstName = in.readString();
+        lastName = in.readString();
+        email = in.readString();
+        password = in.readString();
+        dob = in.readString();
+        cityName = in.readString();
+        mobileNo = in.readString();
+        profession = in.readString();
+    }
+
+    public static final Creator<UserAccountModel> CREATOR = new Creator<UserAccountModel>() {
+        @Override
+        public UserAccountModel createFromParcel(Parcel in) {
+            return new UserAccountModel(in);
+        }
+
+        @Override
+        public UserAccountModel[] newArray(int size) {
+            return new UserAccountModel[size];
+        }
+    };
 
     public String getDob() {
         return dob;
@@ -112,7 +152,14 @@ public class UserAccountModel implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-
+        dest.writeString(firstName);
+        dest.writeString(lastName);
+        dest.writeString(email);
+        dest.writeString(password);
+        dest.writeString(dob);
+        dest.writeString(cityName);
+        dest.writeString(mobileNo);
+        dest.writeString(profession);
     }
 
     public static enum Gender {MALE, FEMALE, OTHER}

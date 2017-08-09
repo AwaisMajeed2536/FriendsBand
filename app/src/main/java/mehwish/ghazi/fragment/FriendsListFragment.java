@@ -99,14 +99,14 @@ public class FriendsListFragment extends Fragment implements View.OnClickListene
 
     private void getFriendNames() {
 
-        friendsListRef.addValueEventListener(new ValueEventListener() {
+        friendsListRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 try {
                     friendsList = new ArrayList<String>();
                     HashMap<String, String> hm = (HashMap<String, String>) dataSnapshot.getValue();
                     friendsList = new ArrayList<String>(hm.keySet());
-                    dataListRef.addValueEventListener(new ValueEventListener() {
+                    dataListRef.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             HashMap<String, HashMap<String, String>> data = (HashMap<String, HashMap<String, String>>)

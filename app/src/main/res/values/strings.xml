@@ -39,4 +39,8 @@
     <string name="title_friends_location">Friend\'s Location</string>
     <string name="title_analyse_friend">Analyse Friend</string>
     <string name="title_activity_check_map">Map</string>
+    <string name="title_activity_nav_drawer">NavDrawerActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 </resources>

@@ -1,6 +1,7 @@
 package mehwish.ghazi.ui;
 
 import android.graphics.Bitmap;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -8,9 +9,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.NumberPicker;
-import android.widget.RadioGroup;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -28,7 +30,7 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
     protected EditText cityName;
     protected EditText mobileNumber;
     protected EditText profession;
-    protected Button signupButton;
+    protected Button profileUpdateButton;
     protected Toolbar mToolbar;
     private UserAccountModel oldData;
     private DatabaseReference updateRef;
@@ -51,8 +53,8 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         cityName = (EditText) findViewById(R.id.city_name);
         mobileNumber = (EditText) findViewById(R.id.mobile_number);
         profession = (EditText) findViewById(R.id.profession);
-        signupButton = (Button) findViewById(R.id.signup_button);
-        signupButton.setOnClickListener(this);
+        profileUpdateButton = (Button) findViewById(R.id.profile_update_button);
+        profileUpdateButton.setOnClickListener(this);
     }
 
     private void displayProfileData(){
@@ -77,6 +79,7 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
     @Override
     public void onClick(View v) {
         if(v.getId() == R.id.profile_update_button){
+            UtilHelpers.showWaitDialog(this, "Updating Profile", "please wait...");
             UserAccountModel newData = new UserAccountModel();
             newData.setFirstName(firstName.getText().toString());
             newData.setLastName(lastName.getText().toString());
@@ -87,7 +90,15 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
             newData.setCityName(cityName.getText().toString());
             newData.setMobileNo(mobileNumber.getText().toString());
             newData.setProfession(profession.getText().toString());
-            updateRef.child(newData.getEmail()).setValue(newData);
+            updateRef.child(newData.getEmail().replace(".", "_")).setValue(newData).addOnCompleteListener(this,
+                    new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            UtilHelpers.dismissWaitDialog();
+                            Toast.makeText(EditProfileActivity.this, "Profile Updated!", Toast.LENGTH_SHORT).show();
+                            finish();
+                        }
+                    });
         }
     }
 }

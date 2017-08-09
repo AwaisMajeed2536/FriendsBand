@@ -19,11 +19,6 @@
         android:supportsRtl="true"
         android:theme="@style/MyMaterialTheme">
         <activity android:name=".ui.SplashActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".ui.LandingActivity" />
         <activity android:name=".ui.LoginActivity" />
@@ -39,7 +34,17 @@
             android:value="@integer/google_play_services_version" />
 
         <activity android:name=".ui.EditProfileActivity" />
-        <activity android:name=".ui.SearchActivity"></activity>
+        <activity android:name=".ui.SearchActivity" />
+        <activity
+            android:name=".ui.NavDrawerActivity"
+            android:label="@string/title_activity_nav_drawer"
+            android:theme="@style/MyMaterialTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

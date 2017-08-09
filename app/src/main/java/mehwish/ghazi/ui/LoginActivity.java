@@ -53,42 +53,46 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.login_button) {
-            if (checkInputs()) {
-                UtilHelpers.showWaitDialog(this, "Checking Credentials...", "Please wait.");
-                String email = userEmailET.getText().toString();
-                email = email.replace(".", "_");
-                DatabaseReference mRef = FirebaseDatabase.getInstance().
-                        getReferenceFromUrl("https://friendsband-a3dc9.firebaseio.com/root/userData/" + email);
-                mRef.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        UtilHelpers.dismissWaitDialog();
-                        if (dataSnapshot.getValue() == null) {
-                            UtilHelpers.showAlertDialog(LoginActivity.this, "Login Failed", "Invalid Credentials...");
-                        } else {
-                            try {
-                                UserAccountModel model = dataSnapshot.getValue(UserAccountModel.class);
-                                if (checkCredentials(model.getPassword())) {
-                                    UtilHelpers.createLoginSession(LoginActivity.this, model);
-                                    startActivity(new Intent(LoginActivity.this, HomeActivity.class));
-                                    overridePendingTransition(R.anim.trans_left_in, R.anim.trans_left_out);
-                                    finish();
-                                } else {
-                                    UtilHelpers.showAlertDialog
-                                            (LoginActivity.this, "Login Failed", "Invalid Credentials...");
-                                }
+            if(UtilHelpers.isNetworkAvailable(this)) {
+                if (checkInputs()) {
+                    UtilHelpers.showWaitDialog(this, "Checking Credentials...", "Please wait.");
+                    String email = userEmailET.getText().toString();
+                    email = email.replace(".", "_");
+                    DatabaseReference mRef = FirebaseDatabase.getInstance().
+                            getReferenceFromUrl("https://friendsband-a3dc9.firebaseio.com/root/userData/" + email);
+                    mRef.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            UtilHelpers.dismissWaitDialog();
+                            if (dataSnapshot.getValue() == null) {
+                                UtilHelpers.showAlertDialog(LoginActivity.this, "Login Failed", "Invalid Credentials...");
+                            } else {
+                                try {
+                                    UserAccountModel model = dataSnapshot.getValue(UserAccountModel.class);
+                                    if (checkCredentials(model.getPassword())) {
+                                        UtilHelpers.createLoginSession(LoginActivity.this, model);
+                                        startActivity(new Intent(LoginActivity.this, HomeActivity.class));
+                                        overridePendingTransition(R.anim.trans_left_in, R.anim.trans_left_out);
+                                        finish();
+                                    } else {
+                                        UtilHelpers.showAlertDialog
+                                                (LoginActivity.this, "Login Failed", "Invalid Credentials...");
+                                    }
 
-                            } catch (Exception e) {
-                                Log.e("LoginActivity", e.getMessage());
+                                } catch (Exception e) {
+                                    Log.e("LoginActivity", e.getMessage());
+                                }
                             }
                         }
-                    }
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
 
-                    }
-                });
+                        }
+                    });
+                }
+            }else{
+                UtilHelpers.showNoInternetDialog(this);
             }
         } else if (view.getId() == R.id.forget_password) {
             startActivity(new Intent(LoginActivity.this, ForgotPasswordActivity.class));

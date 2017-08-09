@@ -140,9 +140,8 @@ public class SearchActivity extends AppCompatActivity implements TextWatcher, Ad
         String email = model.getFriendEmail().replace(".", "_");
         DatabaseReference reqRef = FirebaseDatabase.getInstance()
                 .getReferenceFromUrl("https://friendsband-a3dc9.firebaseio.com/root/requestRecords/" + email);
-        HashMap<String, String> f= new HashMap<>();
-        f.put(UtilHelpers.getLoggedInUser().getEmail(), "true");
-        reqRef.setValue(f);
+        String child = UtilHelpers.getLoggedInUser().getEmail().replace(".", "_");
+        reqRef.child(child).setValue("true");
         Toast.makeText(this, "Request Sent!", Toast.LENGTH_SHORT).show();
         finish();
     }

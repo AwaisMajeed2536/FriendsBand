@@ -7,6 +7,7 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
+
     <style name="MyCustomTheme" parent="@android:style/Theme.Holo.Light">
         <item name="android:actionBarStyle">@style/MyActionBarTheme</item>
         <item name="android:windowDisablePreview">true</item>
@@ -32,10 +33,10 @@
     </style>
 
     <!--<style name="appLogoWhite">-->
-        <!--<item name="android:layout_width">@dimen/app_logo_width</item>-->
-        <!--<item name="android:layout_height">@dimen/app_logo_height</item>-->
-        <!--<item name="android:src">@drawable/logo_white</item>-->
-        <!--<item name="android:layout_centerHorizontal">true</item>-->
+    <!--<item name="android:layout_width">@dimen/app_logo_width</item>-->
+    <!--<item name="android:layout_height">@dimen/app_logo_height</item>-->
+    <!--<item name="android:src">@drawable/logo_white</item>-->
+    <!--<item name="android:layout_centerHorizontal">true</item>-->
     <!--</style>-->
 
     <style name="roundButton">
@@ -97,9 +98,14 @@
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@mipmap/swipe_left_icon</item>
     </style>
+
     <style name="swipe_right_instruction_dialog">
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@mipmap/swipe_right_icon</item>
     </style>
+
+    <style name="MyMaterialTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="MyMaterialTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 </resources>
